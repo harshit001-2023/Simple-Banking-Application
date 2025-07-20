@@ -6,41 +6,54 @@ public class Main {
 
     public static void main(String[] args) {
         //Java Banking System
+        UserInfo userInfo = new UserInfo();
 
-        //Declare Variable
-        double balance = 0;
+        userInfo.run();
+
+
+    }
+
+    public static void process(User user) {
         boolean isRunning = true;
+        Scanner sc = new Scanner(System.in);
         int choice;
-        while(isRunning){
-            //Display Menu
-            System.out.println("Welcome to Bank of Harshit");
+
+        while (isRunning) {
+            System.out.println("\nWelcome " + user.getUserName());
             System.out.println("1. Show Balance");
             System.out.println("2. Deposit");
             System.out.println("3. Withdraw");
             System.out.println("4. Quit");
 
-            //Get and Process User choice
-
-            System.out.println("Please enter you choice ");
+            System.out.print("Enter your choice: ");
             choice = sc.nextInt();
 
-
             switch (choice) {
-                //Use '->'(Only run particular line) instead
-                // ':'(Runs all line from that particular Line
-                // if break not used
-                case 1 -> showBalance(balance);
-                case 2 -> balance += deposit();
-                case 3 -> balance -= withdraw(balance);
+                case 1 -> System.out.printf("Rs%.2f\n", user.getBalance());
+                case 2 -> {
+                    System.out.print("Enter amount to deposit: ");
+                    double amt = sc.nextDouble();
+                    if (amt > 0) user.deposit(amt);
+                    else System.out.println("Invalid amount.");
+                }
+                case 3 -> {
+                    System.out.print("Enter amount to withdraw: ");
+                    double amt = sc.nextDouble();
+                    if (amt < 0) System.out.println("Invalid amount.");
+                    else if (!user.withdraw(amt)) System.out.println("INSUFFICIENT BALANCE");
+                }
                 case 4 -> {
                     isRunning = false;
-                    exit(); //For quiting the loop
+                    System.out.println("Logged out successfully.\n");
                 }
                 default -> System.out.println("INVALID CHOICE");
             }
         }
-        sc.close();
     }
+
+
+
+
     //showBalance()
     static void showBalance(double balance){
         System.out.printf("Rs%.2f\n", balance);
@@ -80,6 +93,8 @@ public class Main {
 
     //Exit Message
     static void exit(){
+        UserInfo userInfo = new UserInfo();
         System.out.println("Thank you! Have a nice day, Exited...");
+        userInfo.run();
     }
 }
